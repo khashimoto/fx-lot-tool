@@ -1,0 +1,108 @@
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<title>FXロット計算ツールver1.0</title>
+</head>
+
+<body>
+	<header class="mx-auto max-w-screen-md bg-black p-3 text-center mb-5">
+		<span class="text-white text-2xl font-bold">FXロット計算ツール</span>&nbsp;<span class="text-white text-sm">ver1.0</span>
+	</header>
+	<div class="mx-auto max-w-screen-md px-4 md:px-8">
+		<form action="javascript:void(0);" id="form">
+			<div class="mb-9">
+				<label for="fx-lot-tool-capital" class="mb-3 inline-block sm:text-base"><span class="text-xl">資金</span>&nbsp;<span class="inline-flex rounded bg-red-200 px-2 py-1 text-md font-semibold leading-4 text-red-700">必須</span></label>
+				<input id="fx-lot-tool-capital" type="number" min="1" class="h-12 w-full rounded border bg-gray-50 px-3 py-2 outline-none ring-indigo-300 transition duration-100 focus:ring" value="" />
+			</div>
+			<div class="mb-9">
+				<label for="fx-lot-tool-pips" class="mb-3 inline-block sm:text-base"><span class="text-xl">損切り幅（pips数）</span>&nbsp;<span class="inline-flex rounded bg-red-200 px-2 py-1 text-md font-semibold leading-4 text-red-700">必須</span></label>
+				<input id="fx-lot-tool-pips" type="number" min="1" autofocus class="h-12 w-full rounded border bg-gray-50 px-3 py-2 outline-none ring-indigo-300 transition duration-100 focus:ring" value="" />
+			</div>
+			<div class="mb-9">
+				<label for="fx-lot-tool-percent" class="mb-3 inline-block sm:text-base"><span class="text-xl">損失％（基本3%）</span>&nbsp;<span class="inline-flex rounded bg-red-200 px-2 py-1 text-md font-semibold leading-4 text-red-700">必須</span></label>
+				<input id="fx-lot-tool-percent" type="number" min="1" class="h-12 w-full rounded border bg-gray-50 px-3 py-2 outline-none ring-indigo-300 transition duration-100 focus:ring" value="3" />
+			</div>
+			<div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 font-bold text-xl">
+				<p class="mb-5">エントリーLOT数：<span id="fx-lot-tool-lot">-</span></p>
+				<p>損失金額：<span id="fx-lot-tool-loss">-</span>円</p>
+			</div>
+		</form>
+	</div>
+
+	<footer class="mx-auto max-w-screen-md bg-black p-3 text-center">
+		<span class="text-white">Copyright © <a href="https://nice-trade.com/" class="underline text-sky-400" target="_blank">ナイストレードドットコム</a> All Rights Reserved.</span>
+	</footer>
+	<script>
+		// 読み込み
+		load();
+		// 計算
+		output();
+
+		// メイン関数
+		["input", "keydown"].forEach((eventType) => {
+			// Webストレージへ保存
+			const id_list = get_id_list();
+			id_list.forEach(function (element, index) {
+				document.getElementById(element).addEventListener(eventType, () => {
+					// 保存
+					save();
+
+					// 計算
+					output();
+				});
+			});
+		});
+
+		// 読み込み関数
+		function load() {
+			const id_list = get_id_list();
+			id_list.forEach(function (element, index) {
+				document.getElementById(element).value = localStorage.getItem(element);
+			});
+		}
+
+		// Webストレージへ保存関数
+		function save() {
+			const id_list = get_id_list();
+			id_list.forEach(function (element, index) {
+				localStorage.setItem(element, document.getElementById(element).value);
+			});
+		}
+
+		// IDリストを取得関数
+		function get_id_list() {
+			const response = [];
+			response.push('fx-lot-tool-capital');
+			response.push('fx-lot-tool-pips');
+			response.push('fx-lot-tool-percent');
+			return response;
+		}
+
+		// 出力関数
+		function output() {
+			var capital = document.getElementById('fx-lot-tool-capital').value;
+			var pips = document.getElementById('fx-lot-tool-pips').value;
+			var percent = document.getElementById('fx-lot-tool-percent').value;
+			if (capital && pips && percent) {
+				// 損失額
+				var loss = Math.ceil(capital * percent / 100);
+				const formatter = new Intl.NumberFormat('ja-JP');
+				document.getElementById('fx-lot-tool-loss').innerHTML = formatter.format(loss);
+
+				// LOT数
+				var lot = (loss / pips) * 0.001;
+				if (lot < 0.01) {
+					lot = '-';
+				} else {
+					lot = Math.round(lot * 100) / 100;
+				}
+				document.getElementById('fx-lot-tool-lot').innerHTML = lot;
+			}
+		}
+	</script>
+</body>
+
+</html>
