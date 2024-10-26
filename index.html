@@ -4,12 +4,12 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script src="https://cdn.tailwindcss.com"></script>
-	<title>FXロット計算ツールver1.0</title>
+	<title>FXロット計算ツールver1.1</title>
 </head>
 
 <body>
 	<header class="mx-auto max-w-screen-md bg-black p-3 text-center mb-5">
-		<span class="text-white text-2xl font-bold">FXロット計算ツール</span>&nbsp;<span class="text-white text-sm">ver1.0</span>
+		<span class="text-white text-2xl font-bold">FXロット計算ツール</span>&nbsp;<span class="text-white text-sm">ver1.1</span>
 	</header>
 	<div class="mx-auto max-w-screen-md px-4 md:px-8">
 		<form action="javascript:void(0);" id="form">
@@ -27,6 +27,7 @@
 			</div>
 			<div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 font-bold text-xl">
 				<p class="mb-5">エントリーLOT数：<span id="fx-lot-tool-lot">-</span></p>
+				<p id="alert" class="hidden mb-5 text-red-700">※ エントリーは非推奨です。<br>資金もしくは損切り幅を調整ください。</p>
 				<p>損失金額：<span id="fx-lot-tool-loss">-</span>円</p>
 			</div>
 		</form>
@@ -83,6 +84,9 @@
 
 		// 出力関数
 		function output() {
+			document.getElementById('fx-lot-tool-lot').classList.remove('text-red-700');
+			document.getElementById('alert').classList.add('hidden');
+
 			var capital = document.getElementById('fx-lot-tool-capital').value;
 			var pips = document.getElementById('fx-lot-tool-pips').value;
 			var percent = document.getElementById('fx-lot-tool-percent').value;
@@ -95,7 +99,9 @@
 				// LOT数
 				var lot = (loss / pips) * 0.001;
 				if (lot < 0.01) {
-					lot = '-';
+					lot = '0.01'; //注釈 + 赤色
+					document.getElementById('fx-lot-tool-lot').classList.add('text-red-700');
+					document.getElementById('alert').classList.remove('hidden');
 				} else {
 					lot = Math.round(lot * 100) / 100;
 				}
