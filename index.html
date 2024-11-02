@@ -4,12 +4,12 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script src="https://cdn.tailwindcss.com"></script>
-	<title>FXロット計算ツールver1.1</title>
+	<title>FXロット計算ツールver1.2</title>
 </head>
 
 <body>
 	<header class="mx-auto max-w-screen-md bg-black p-3 text-center mb-5">
-		<span class="text-white text-2xl font-bold">FXロット計算ツール</span>&nbsp;<span class="text-white text-sm">ver1.1</span>
+		<span class="text-white text-2xl font-bold">FXロット計算ツール</span>&nbsp;<span class="text-white text-sm">ver1.2</span>
 	</header>
 	<div class="mx-auto max-w-screen-md px-4 md:px-8">
 		<form action="javascript:void(0);" id="form">
@@ -90,13 +90,15 @@
 			var capital = document.getElementById('fx-lot-tool-capital').value;
 			var pips = document.getElementById('fx-lot-tool-pips').value;
 			var percent = document.getElementById('fx-lot-tool-percent').value;
-			if (capital && pips && percent) {
-				// 損失額
+
+			// 損失額
+			if (capital && percent) {
 				var loss = Math.ceil(capital * percent / 100);
 				const formatter = new Intl.NumberFormat('ja-JP');
 				document.getElementById('fx-lot-tool-loss').innerHTML = formatter.format(loss);
-
-				// LOT数
+			}
+			// LOT数
+			if (loss && pips) {
 				var lot = (loss / pips) * 0.001;
 				if (lot < 0.01) {
 					lot = '0.01'; //注釈 + 赤色
