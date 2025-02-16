@@ -1,0 +1,294 @@
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<title>FX通貨の相関関係ver1.0</title>
+</head>
+
+<body>
+	<header class="mx-auto max-w-screen-md bg-black p-3 text-center mb-5">
+		<span class="text-white text-2xl font-bold">FX通貨の相関関係</span>&nbsp;<span class="text-white text-sm">ver1.0</span>
+	</header>
+	<div class="mx-auto max-w-screen-md px-4 md:px-8">
+		<form action="javascript:void(0);" id="form">
+			<div class="mb-9">
+				<label class="mb-3 inline-block sm:text-base"><span class="text-xl">通貨を選択してください</span>&nbsp;<span class="inline-flex rounded bg-red-200 px-2 py-1 text-md font-semibold leading-4 text-red-700">必須</span></label><br>
+				<select id="fx-correlation-target" class="h-12 w-full rounded border bg-gray-50 px-3 py-2 outline-none ring-indigo-300 transition duration-100 focus:ring" name="fx-correlation-target">
+					<option value="">-</option>
+					<option value="eurjpy">EUR/JPY</option>
+					<option value="gbpjpy">GBP/JPY</option>
+					<option value="audjpy">AUD/JPY</option>
+					<option value="cadjpy">CAD/JPY</option>
+					<option value="eurusd">EUR/USD</option>
+					<option value="gbpusd">GBP/USD</option>
+					<option value="audusd">AUD/USD</option>
+					<option value="usdcad">USD/CAD</option>
+					<option value="euraud">EUR/AUD</option>
+					<option value="gbpaud">GBP/AUD</option>
+					<option value="usdchf">USD/CHF</option>
+					<option value="nzdjpy">NZD/JPY</option>
+					<option value="eurnzd">EUR/NZD</option>
+					<option value="gbpnzd">GBP/NZD</option>
+					<option value="audnzd">AUD/NZD</option>
+					<option value="nzdusd">NZD/USD</option>
+					<option value="eurcad">EUR/CAD</option>
+					<option value="gbpcad">GBP/CAD</option>
+					<option value="eurgbp">EUR/GBP</option>
+					<option value="chfjpy">CHF/JPY</option>
+					<option value="eurchf">EUR/CHF</option>
+					<option value="gbpchf">GBP/CHF</option>
+				</select>
+			</div>
+			<div id="fx-correlation-table" class="hidden p-4 mb-4 text-sm text-slate-700 rounded-lg bg-emerald-50 font-bold text-xl">
+			</div>
+		</form>
+	</div>
+
+	<footer class="mx-auto max-w-screen-md bg-black p-3 text-center">
+		<span class="text-white">Copyright © <a href="https://nice-trade.com/" class="underline text-sky-400" target="_blank">ナイストレードドットコム</a> All Rights Reserved.</span>
+	</footer>
+	<script>
+		document.getElementById('fx-correlation-target').addEventListener('change', function(event) {
+			let select_value = event.currentTarget.value;
+			if (!select_value || !master_list[select_value]) {
+				document.getElementById('fx-correlation-table').classList.add('hidden');
+				document.getElementById('fx-correlation-table').innerHTML = '';
+				return;
+			}
+			var table = '<ul class="text-base sm:text-lg">';
+				master_list[select_value].forEach((item) => {
+					table += '<li class="mb-4">' + item + '</li>';
+				});
+				table += '</ul>';
+
+			document.getElementById('fx-correlation-table').innerHTML = table;
+			document.getElementById('fx-correlation-table').classList.remove('hidden');
+		});
+
+		var master_list = [];
+		master_list['eurjpy'] = [];
+		master_list['eurjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> × EUR/USD <span class="text-sky-600">↑</span> = EUR/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> × EUR/USD → = EUR/JPY <span class="text-sky-600">↑</span>';
+		master_list['eurjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> × EUR/USD <span class="text-rose-600">↓</span> = EUR/JPY →';
+		master_list['eurjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> × EUR/USD <span class="text-sky-600">↑</span> = EUR/JPY →';
+		master_list['eurjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> × EUR/USD → = EUR/JPY <span class="text-rose-600">↓</span>';
+		master_list['eurjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> × EUR/USD <span class="text-rose-600">↓</span> = EUR/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurjpy'][6] = 'USD/JPY → × EUR/USD <span class="text-sky-600">↑</span> = EUR/JPY <span class="text-sky-600">↑</span>';
+		master_list['eurjpy'][7] = 'USD/JPY → × EUR/USD → = EUR/JPY →→';
+		master_list['eurjpy'][8] = 'USD/JPY → × EUR/USD <span class="text-rose-600">↓</span> = EUR/JPY <span class="text-rose-600">↓</span>';
+		master_list['gbpjpy'] = [];
+		master_list['gbpjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> × GBP/USD <span class="text-sky-600">↑</span> = GBP/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> × GBP/USD → = GBP/JPY <span class="text-sky-600">↑</span>';
+		master_list['gbpjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> × GBP/USD <span class="text-rose-600">↓</span> = GBP/JPY →';
+		master_list['gbpjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> × GBP/USD <span class="text-sky-600">↑</span> = GBP/JPY →';
+		master_list['gbpjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> × GBP/USD → = GBP/JPY <span class="text-rose-600">↓</span>';
+		master_list['gbpjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> × GBP/USD <span class="text-rose-600">↓</span> = GBP/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpjpy'][6] = 'USD/JPY → × GBP/USD <span class="text-sky-600">↑</span> = GBP/JPY <span class="text-sky-600">↑</span>';
+		master_list['gbpjpy'][7] = 'USD/JPY → × GBP/USD → = GBP/JPY →→';
+		master_list['gbpjpy'][8] = 'USD/JPY → × GBP/USD <span class="text-rose-600">↓</span> = GBP/JPY <span class="text-rose-600">↓</span>';
+		master_list['audjpy'] = [];
+		master_list['audjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> × AUD/USD <span class="text-sky-600">↑</span> = AUD/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['audjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> × AUD/USD → = AUD/JPY <span class="text-sky-600">↑</span>';
+		master_list['audjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> × AUD/USD <span class="text-rose-600">↓</span> = AUD/JPY →';
+		master_list['audjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> × AUD/USD <span class="text-sky-600">↑</span> = AUD/JPY →';
+		master_list['audjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> × AUD/USD → = AUD/JPY <span class="text-rose-600">↓</span>';
+		master_list['audjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> × AUD/USD <span class="text-rose-600">↓</span> = AUD/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['audjpy'][6] = 'USD/JPY → × AUD/USD <span class="text-sky-600">↑</span> = AUD/JPY <span class="text-sky-600">↑</span>';
+		master_list['audjpy'][7] = 'USD/JPY → × AUD/USD → = AUD/JPY →→';
+		master_list['audjpy'][8] = 'USD/JPY → × AUD/USD <span class="text-rose-600">↓</span> = AUD/JPY <span class="text-rose-600">↓</span>';
+		master_list['cadjpy'] = [];
+		master_list['cadjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CAD <span class="text-sky-600">↑</span> = CAD/JPY →';
+		master_list['cadjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CAD → = CAD/JPY <span class="text-sky-600">↑</span>';
+		master_list['cadjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CAD <span class="text-rose-600">↓</span> = CAD/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['cadjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CAD <span class="text-sky-600">↑</span> = CAD/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['cadjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CAD → = CAD/JPY <span class="text-rose-600">↓</span>';
+		master_list['cadjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CAD <span class="text-rose-600">↓</span> = CAD/JPY →';
+		master_list['cadjpy'][6] = 'USD/JPY → ÷ USD/CAD <span class="text-sky-600">↑</span> = CAD/JPY <span class="text-rose-600">↓</span>';
+		master_list['cadjpy'][7] = 'USD/JPY → ÷ USD/CAD → = CAD/JPY →→';
+		master_list['cadjpy'][8] = 'USD/JPY → ÷ USD/CAD <span class="text-rose-600">↓</span> = CAD/JPY <span class="text-sky-600">↑</span>';
+		master_list['eurusd'] = [];
+		master_list['eurusd'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = EUR/USD →';
+		master_list['eurusd'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY → = EUR/USD <span class="text-sky-600">↑</span>';
+		master_list['eurusd'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = EUR/USD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurusd'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = EUR/USD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurusd'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY → = EUR/USD <span class="text-rose-600">↓</span>';
+		master_list['eurusd'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = EUR/USD →';
+		master_list['eurusd'][6] = 'EUR/JPY → ÷ USD/JPY <span class="text-sky-600">↑</span> = EUR/USD <span class="text-rose-600">↓</span>';
+		master_list['eurusd'][7] = 'EUR/JPY → ÷ USD/JPY → = EUR/USD →→';
+		master_list['eurusd'][8] = 'EUR/JPY → ÷ USD/JPY <span class="text-rose-600">↓</span> = EUR/USD <span class="text-sky-600">↑</span>';
+		master_list['gbpusd'] = [];
+		master_list['gbpusd'][0] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = GBP/USD →';
+		master_list['gbpusd'][1] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY → = GBP/USD <span class="text-sky-600">↑</span>';
+		master_list['gbpusd'][2] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = GBP/USD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpusd'][3] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = GBP/USD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpusd'][4] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY → = GBP/USD <span class="text-rose-600">↓</span>';
+		master_list['gbpusd'][5] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = GBP/USD →';
+		master_list['gbpusd'][6] = 'GBP/JPY → ÷ USD/JPY <span class="text-sky-600">↑</span> = GBP/USD <span class="text-rose-600">↓</span>';
+		master_list['gbpusd'][7] = 'GBP/JPY → ÷ USD/JPY → = GBP/USD →→';
+		master_list['gbpusd'][8] = 'GBP/JPY → ÷ USD/JPY <span class="text-rose-600">↓</span> = GBP/USD <span class="text-sky-600">↑</span>';
+		master_list['audusd'] = [];
+		master_list['audusd'][0] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = AUD/USD →';
+		master_list['audusd'][1] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY → = AUD/USD <span class="text-sky-600">↑</span>';
+		master_list['audusd'][2] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = AUD/USD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['audusd'][3] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = AUD/USD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['audusd'][4] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY → = AUD/USD <span class="text-rose-600">↓</span>';
+		master_list['audusd'][5] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = AUD/USD →';
+		master_list['audusd'][6] = 'AUD/JPY → ÷ USD/JPY <span class="text-sky-600">↑</span> = AUD/USD <span class="text-rose-600">↓</span>';
+		master_list['audusd'][7] = 'AUD/JPY → ÷ USD/JPY → = AUD/USD →→';
+		master_list['audusd'][8] = 'AUD/JPY → ÷ USD/JPY <span class="text-rose-600">↓</span> = AUD/USD <span class="text-sky-600">↑</span>';
+		master_list['usdcad'] = [];
+		master_list['usdcad'][0] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = USD/CAD →';
+		master_list['usdcad'][1] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY → = USD/CAD <span class="text-sky-600">↑</span>';
+		master_list['usdcad'][2] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = USD/CAD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['usdcad'][3] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = USD/CAD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['usdcad'][4] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY → = USD/CAD <span class="text-rose-600">↓</span>';
+		master_list['usdcad'][5] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = USD/CAD →';
+		master_list['usdcad'][6] = 'USD/JPY → ÷ CAD/JPY <span class="text-sky-600">↑</span> = USD/CAD <span class="text-rose-600">↓</span>';
+		master_list['usdcad'][7] = 'USD/JPY → ÷ CAD/JPY → = USD/CAD →→';
+		master_list['usdcad'][8] = 'USD/JPY → ÷ CAD/JPY <span class="text-rose-600">↓</span> = USD/CAD <span class="text-sky-600">↑</span>';
+		master_list['euraud'] = [];
+		master_list['euraud'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY <span class="text-sky-600">↑</span> = EUR/AUD →';
+		master_list['euraud'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY → = EUR/AUD <span class="text-sky-600">↑</span>';
+		master_list['euraud'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY <span class="text-rose-600">↓</span> = EUR/AUD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['euraud'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY <span class="text-sky-600">↑</span> = EUR/AUD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['euraud'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY → = EUR/AUD <span class="text-rose-600">↓</span>';
+		master_list['euraud'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY <span class="text-rose-600">↓</span> = EUR/AUD →';
+		master_list['euraud'][6] = 'EUR/JPY → ÷ AUD/JPY <span class="text-sky-600">↑</span> = EUR/AUD <span class="text-rose-600">↓</span>';
+		master_list['euraud'][7] = 'EUR/JPY → ÷ AUD/JPY → = EUR/AUD →→';
+		master_list['euraud'][8] = 'EUR/JPY → ÷ AUD/JPY <span class="text-rose-600">↓</span> = EUR/AUD <span class="text-sky-600">↑</span>';
+		master_list['gbpaud'] = [];
+		master_list['gbpaud'][0] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY <span class="text-sky-600">↑</span> = GBP/AUD →';
+		master_list['gbpaud'][1] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY → = GBP/AUD <span class="text-sky-600">↑</span>';
+		master_list['gbpaud'][2] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ AUD/JPY <span class="text-rose-600">↓</span> = GBP/AUD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpaud'][3] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY <span class="text-sky-600">↑</span> = GBP/AUD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpaud'][4] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY → = GBP/AUD <span class="text-rose-600">↓</span>';
+		master_list['gbpaud'][5] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ AUD/JPY <span class="text-rose-600">↓</span> = GBP/AUD →';
+		master_list['gbpaud'][6] = 'GBP/JPY → ÷ AUD/JPY <span class="text-sky-600">↑</span> = GBP/AUD <span class="text-rose-600">↓</span>';
+		master_list['gbpaud'][7] = 'GBP/JPY → ÷ AUD/JPY → = GBP/AUD →→';
+		master_list['gbpaud'][8] = 'GBP/JPY → ÷ AUD/JPY <span class="text-rose-600">↓</span> = GBP/AUD <span class="text-sky-600">↑</span>';
+		master_list['usdchf'] = [];
+		master_list['usdchf'][0] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = USD/CHF →';
+		master_list['usdchf'][1] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY → = USD/CHF <span class="text-sky-600">↑</span>';
+		master_list['usdchf'][2] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = USD/CHF <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['usdchf'][3] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = USD/CHF <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['usdchf'][4] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY → = USD/CHF <span class="text-rose-600">↓</span>';
+		master_list['usdchf'][5] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = USD/CHF →';
+		master_list['usdchf'][6] = 'USD/JPY → ÷ CHF/JPY <span class="text-sky-600">↑</span> = USD/CHF <span class="text-rose-600">↓</span>';
+		master_list['usdchf'][7] = 'USD/JPY → ÷ CHF/JPY → = USD/CHF →→';
+		master_list['usdchf'][8] = 'USD/JPY → ÷ CHF/JPY <span class="text-rose-600">↓</span> = USD/CHF <span class="text-sky-600">↑</span>';
+		master_list['nzdjpy'] = [];
+		master_list['nzdjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> × NZD/USD <span class="text-sky-600">↑</span> = NZD/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['nzdjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> × NZD/USD → = NZD/JPY <span class="text-sky-600">↑</span>';
+		master_list['nzdjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> × NZD/USD <span class="text-rose-600">↓</span> = NZD/JPY →';
+		master_list['nzdjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> × NZD/USD <span class="text-sky-600">↑</span> = NZD/JPY →';
+		master_list['nzdjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> × NZD/USD → = NZD/JPY <span class="text-rose-600">↓</span>';
+		master_list['nzdjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> × NZD/USD <span class="text-rose-600">↓</span> = NZD/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['nzdjpy'][6] = 'USD/JPY → × NZD/USD <span class="text-sky-600">↑</span> = NZD/JPY <span class="text-sky-600">↑</span>';
+		master_list['nzdjpy'][7] = 'USD/JPY → × NZD/USD → = NZD/JPY →→';
+		master_list['nzdjpy'][8] = 'USD/JPY → × NZD/USD <span class="text-rose-600">↓</span> = NZD/JPY <span class="text-rose-600">↓</span>';
+		master_list['eurnzd'] = [];
+		master_list['eurnzd'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = EUR/NZD →';
+		master_list['eurnzd'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY → = EUR/NZD <span class="text-sky-600">↑</span>';
+		master_list['eurnzd'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = EUR/NZD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurnzd'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = EUR/NZD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurnzd'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY → = EUR/NZD <span class="text-rose-600">↓</span>';
+		master_list['eurnzd'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = EUR/NZD →';
+		master_list['eurnzd'][6] = 'EUR/JPY → ÷ NZD/JPY <span class="text-sky-600">↑</span> = EUR/NZD <span class="text-rose-600">↓</span>';
+		master_list['eurnzd'][7] = 'EUR/JPY → ÷ NZD/JPY → = EUR/NZD →→';
+		master_list['eurnzd'][8] = 'EUR/JPY → ÷ NZD/JPY <span class="text-rose-600">↓</span> = EUR/NZD <span class="text-sky-600">↑</span>';
+		master_list['gbpnzd'] = [];
+		master_list['gbpnzd'][0] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = GBP/NZD →';
+		master_list['gbpnzd'][1] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY → = GBP/NZD <span class="text-sky-600">↑</span>';
+		master_list['gbpnzd'][2] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = GBP/NZD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpnzd'][3] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = GBP/NZD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpnzd'][4] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY → = GBP/NZD <span class="text-rose-600">↓</span>';
+		master_list['gbpnzd'][5] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = GBP/NZD →';
+		master_list['gbpnzd'][6] = 'GBP/JPY → ÷ NZD/JPY <span class="text-sky-600">↑</span> = GBP/NZD <span class="text-rose-600">↓</span>';
+		master_list['gbpnzd'][7] = 'GBP/JPY → ÷ NZD/JPY → = GBP/NZD →→';
+		master_list['gbpnzd'][8] = 'GBP/JPY → ÷ NZD/JPY <span class="text-rose-600">↓</span> = GBP/NZD <span class="text-sky-600">↑</span>';
+		master_list['audnzd'] = [];
+		master_list['audnzd'][0] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = AUD/NZD →';
+		master_list['audnzd'][1] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY → = AUD/NZD <span class="text-sky-600">↑</span>';
+		master_list['audnzd'][2] = 'AUD/JPY <span class="text-sky-600">↑</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = AUD/NZD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['audnzd'][3] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-sky-600">↑</span> = AUD/NZD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['audnzd'][4] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY → = AUD/NZD <span class="text-rose-600">↓</span>';
+		master_list['audnzd'][5] = 'AUD/JPY <span class="text-rose-600">↓</span> ÷ NZD/JPY <span class="text-rose-600">↓</span> = AUD/NZD →';
+		master_list['audnzd'][6] = 'AUD/JPY → ÷ NZD/JPY <span class="text-sky-600">↑</span> = AUD/NZD <span class="text-rose-600">↓</span>';
+		master_list['audnzd'][7] = 'AUD/JPY → ÷ NZD/JPY → = AUD/NZD →→';
+		master_list['audnzd'][8] = 'AUD/JPY → ÷ NZD/JPY <span class="text-rose-600">↓</span> = AUD/NZD <span class="text-sky-600">↑</span>';
+		master_list['nzdusd'] = [];
+		master_list['nzdusd'][0] = 'NZD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = NZD/USD →';
+		master_list['nzdusd'][1] = 'NZD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY → = NZD/USD <span class="text-sky-600">↑</span>';
+		master_list['nzdusd'][2] = 'NZD/JPY <span class="text-sky-600">↑</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = NZD/USD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['nzdusd'][3] = 'NZD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-sky-600">↑</span> = NZD/USD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['nzdusd'][4] = 'NZD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY → = NZD/USD <span class="text-rose-600">↓</span>';
+		master_list['nzdusd'][5] = 'NZD/JPY <span class="text-rose-600">↓</span> ÷ USD/JPY <span class="text-rose-600">↓</span> = NZD/USD →';
+		master_list['nzdusd'][6] = 'NZD/JPY → ÷ USD/JPY <span class="text-sky-600">↑</span> = NZD/USD <span class="text-rose-600">↓</span>';
+		master_list['nzdusd'][7] = 'NZD/JPY → ÷ USD/JPY → = NZD/USD →→';
+		master_list['nzdusd'][8] = 'NZD/JPY → ÷ USD/JPY <span class="text-rose-600">↓</span> = NZD/USD <span class="text-sky-600">↑</span>';
+		master_list['eurcad'] = [];
+		master_list['eurcad'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = EUR/CAD →';
+		master_list['eurcad'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY → = EUR/CAD <span class="text-sky-600">↑</span>';
+		master_list['eurcad'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = EUR/CAD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurcad'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = EUR/CAD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurcad'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY → = EUR/CAD <span class="text-rose-600">↓</span>';
+		master_list['eurcad'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = EUR/CAD →';
+		master_list['eurcad'][6] = 'EUR/JPY → ÷ CAD/JPY <span class="text-sky-600">↑</span> = EUR/CAD <span class="text-rose-600">↓</span>';
+		master_list['eurcad'][7] = 'EUR/JPY → ÷ CAD/JPY → = EUR/CAD →→';
+		master_list['eurcad'][8] = 'EUR/JPY → ÷ CAD/JPY <span class="text-rose-600">↓</span> = EUR/CAD <span class="text-sky-600">↑</span>';
+		master_list['gbpcad'] = [];
+		master_list['gbpcad'][0] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = GBP/CAD →';
+		master_list['gbpcad'][1] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY → = GBP/CAD <span class="text-sky-600">↑</span>';
+		master_list['gbpcad'][2] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = GBP/CAD <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpcad'][3] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-sky-600">↑</span> = GBP/CAD <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpcad'][4] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY → = GBP/CAD <span class="text-rose-600">↓</span>';
+		master_list['gbpcad'][5] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CAD/JPY <span class="text-rose-600">↓</span> = GBP/CAD →';
+		master_list['gbpcad'][6] = 'GBP/JPY → ÷ CAD/JPY <span class="text-sky-600">↑</span> = GBP/CAD <span class="text-rose-600">↓</span>';
+		master_list['gbpcad'][7] = 'GBP/JPY → ÷ CAD/JPY → = GBP/CAD →→';
+		master_list['gbpcad'][8] = 'GBP/JPY → ÷ CAD/JPY <span class="text-rose-600">↓</span> = GBP/CAD <span class="text-sky-600">↑</span>';
+		master_list['eurgbp'] = [];
+		master_list['eurgbp'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ GBP/JPY <span class="text-sky-600">↑</span> = EUR/GBP →';
+		master_list['eurgbp'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ GBP/JPY → = EUR/GBP <span class="text-sky-600">↑</span>';
+		master_list['eurgbp'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ GBP/JPY <span class="text-rose-600">↓</span> = EUR/GBP <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurgbp'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ GBP/JPY <span class="text-sky-600">↑</span> = EUR/GBP <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurgbp'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ GBP/JPY → = EUR/GBP <span class="text-rose-600">↓</span>';
+		master_list['eurgbp'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ GBP/JPY <span class="text-rose-600">↓</span> = EUR/GBP →';
+		master_list['eurgbp'][6] = 'EUR/JPY → ÷ GBP/JPY <span class="text-sky-600">↑</span> = EUR/GBP <span class="text-rose-600">↓</span>';
+		master_list['eurgbp'][7] = 'EUR/JPY → ÷ GBP/JPY → = EUR/GBP →→';
+		master_list['eurgbp'][8] = 'EUR/JPY → ÷ GBP/JPY <span class="text-rose-600">↓</span> = EUR/GBP <span class="text-sky-600">↑</span>';
+		master_list['chfjpy'] = [];
+		master_list['chfjpy'][0] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CHF <span class="text-sky-600">↑</span> = CHF/JPY →';
+		master_list['chfjpy'][1] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CHF → = CHF/JPY <span class="text-sky-600">↑</span>';
+		master_list['chfjpy'][2] = 'USD/JPY <span class="text-sky-600">↑</span> ÷ USD/CHF <span class="text-rose-600">↓</span> = CHF/JPY <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['chfjpy'][3] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CHF <span class="text-sky-600">↑</span> = CHF/JPY <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['chfjpy'][4] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CHF → = CHF/JPY <span class="text-rose-600">↓</span>';
+		master_list['chfjpy'][5] = 'USD/JPY <span class="text-rose-600">↓</span> ÷ USD/CHF <span class="text-rose-600">↓</span> = CHF/JPY →';
+		master_list['chfjpy'][6] = 'USD/JPY → ÷ USD/CHF <span class="text-sky-600">↑</span> = CHF/JPY <span class="text-rose-600">↓</span>';
+		master_list['chfjpy'][7] = 'USD/JPY → ÷ USD/CHF → = CHF/JPY →→';
+		master_list['chfjpy'][8] = 'USD/JPY → ÷ USD/CHF <span class="text-rose-600">↓</span> = CHF/JPY <span class="text-sky-600">↑</span>';
+		master_list['eurchf'] = [];
+		master_list['eurchf'][0] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = EUR/CHF →';
+		master_list['eurchf'][1] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY → = EUR/CHF <span class="text-sky-600">↑</span>';
+		master_list['eurchf'][2] = 'EUR/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = EUR/CHF <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['eurchf'][3] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = EUR/CHF <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['eurchf'][4] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY → = EUR/CHF <span class="text-rose-600">↓</span>';
+		master_list['eurchf'][5] = 'EUR/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = EUR/CHF →';
+		master_list['eurchf'][6] = 'EUR/JPY → ÷ CHF/JPY <span class="text-sky-600">↑</span> = EUR/CHF <span class="text-rose-600">↓</span>';
+		master_list['eurchf'][7] = 'EUR/JPY → ÷ CHF/JPY → = EUR/CHF →→';
+		master_list['eurchf'][8] = 'EUR/JPY → ÷ CHF/JPY <span class="text-rose-600">↓</span> = EUR/CHF <span class="text-sky-600">↑</span>';
+		master_list['gbpchf'] = [];
+		master_list['gbpchf'][0] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = GBP/CHF →';
+		master_list['gbpchf'][1] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY → = GBP/CHF <span class="text-sky-600">↑</span>';
+		master_list['gbpchf'][2] = 'GBP/JPY <span class="text-sky-600">↑</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = GBP/CHF <span class="text-sky-600">↑</span><span class="text-sky-600">↑</span>';
+		master_list['gbpchf'][3] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-sky-600">↑</span> = GBP/CHF <span class="text-rose-600">↓</span><span class="text-rose-600">↓</span>';
+		master_list['gbpchf'][4] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY → = GBP/CHF <span class="text-rose-600">↓</span>';
+		master_list['gbpchf'][5] = 'GBP/JPY <span class="text-rose-600">↓</span> ÷ CHF/JPY <span class="text-rose-600">↓</span> = GBP/CHF →';
+		master_list['gbpchf'][6] = 'GBP/JPY → ÷ CHF/JPY <span class="text-sky-600">↑</span> = GBP/CHF <span class="text-rose-600">↓</span>';
+		master_list['gbpchf'][7] = 'GBP/JPY → ÷ CHF/JPY → = GBP/CHF →→';
+		master_list['gbpchf'][8] = 'GBP/JPY → ÷ CHF/JPY <span class="text-rose-600">↓</span> = GBP/CHF <span class="text-sky-600">↑</span>';
+	</script>
+</body>
+
+</html>
